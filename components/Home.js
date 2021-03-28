@@ -4,15 +4,14 @@ import Search from "./Search";
 import axios from "axios";
 import ChannelList from "./ChannelList";
 import { debounce } from "lodash";
+import { connect } from "react-redux";
+import { fetchData, updateData } from "../actions/channelAction";
 
-export default function Home() {
+const Home = (props) => {
   const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState({});
+  const [nextPageToken, setNextPageToken] = useState("");
   const [refresh, setRefresh] = useState(false);
-
-  const API_KEY = "AIzaSyCOhiEHI1v6JwAE4XT4vNg1dXhQKUoe37U";
 
   useEffect(() => {
     reload(search);
@@ -23,59 +22,30 @@ export default function Home() {
     []
   );
 
+  const afterFetch = (token) => {
+    setLoading(false);
+    setNextPageToken(token);
+  };
+
+  const afterRefresh = (token) => {
+    setRefresh(false);
+    setNextPageToken(token);
+  };
+
   const fetchData = (text) => {
     setLoading(true);
-    axios
-      .get(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${text}&maxResults=15&type=channel&key=${API_KEY}`
-      )
-      .then((res) => {
-        setData(res.data["items"]);
-        const pagination = {
-          length: res.data["pageInfo"]["resultsPerPage"],
-          total: res.data["pageInfo"]["totalResults"],
-          nextPageToken: res.data["nextPageToken"],
-        };
-        setPagination(pagination);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Error in Fetching Data");
-        setData([]);
-        setPagination({});
-        setLoading(false);
-      });
+    props.fetchData(text, afterFetch);
   };
 
   const nextPage = () => {
-    console.log("next page called");
-    axios
-      .get(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${search}&pageToken=${pagination.nextPageToken}&maxResults=10&type=channel&key=${API_KEY}`
-      )
-      .then((res) => {
-        const newData = data.concat(res.data["items"]);
-        setData(newData);
-        const pagination = {
-          length: res.data["pageInfo"]["resultsPerPage"],
-          total: res.data["pageInfo"]["totalResults"],
-          nextPageToken: res.data["nextPageToken"],
-        };
-        setPagination(pagination);
-        setRefresh(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Error in Fetching Data");
-      });
+    props.updateData(nextPageToken, afterRefresh);
   };
 
   return (
     <View styles={styles.container}>
       <Search search={search} setSearch={setSearch} />
       <ChannelList
-        data={data}
+        data={props.channels}
         loading={loading}
         nextPage={nextPage}
         refresh={refresh}
@@ -85,7 +55,23 @@ export default function Home() {
       />
     </View>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    channels: state.channels.channels,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchData: (data, afterFetch) => dispatch(fetchData(data, afterFetch)),
+    updateData: (token, afterRefresh) =>
+      dispatch(updateData(token, afterRefresh)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const styles = StyleSheet.create({
   container: {

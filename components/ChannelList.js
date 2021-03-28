@@ -31,7 +31,7 @@ const ChannelList = React.memo(
               setRefresh(true);
               nextPage();
             }}
-            onEndThreshold={0.1}
+            onEndThreshold={0.5}
             loading={loading}
             refreshing={refresh}
             onRefresh={() => {

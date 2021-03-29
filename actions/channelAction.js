@@ -1,8 +1,7 @@
 import { FETCH_DATA, UPDATE_DATA } from "./types";
 import axios from "axios";
 import { API_KEY } from "@env";
-
-// const API_KEY = "AIzaSyDNkyz-KDdMHe5w8xVQJwXh8iTq2bPIqms";
+import { Alert } from "react-native";
 
 export const fetchData = (text, changeCompState) => (dispatch) => {
   return axios
@@ -17,6 +16,7 @@ export const fetchData = (text, changeCompState) => (dispatch) => {
       console.log(error);
       dispatch(changeData([]));
       changeCompState("");
+      Alert.alert("Error in Fetching Data");
     });
 };
 
@@ -40,7 +40,7 @@ export const updateData = (token, changeCompState) => (dispatch) => {
       console.log(error);
       dispatch(nextData([]));
       changeCompState("");
-      Alert("Error");
+      Alert.alert("Error in Fetching Data");
     });
 };
 

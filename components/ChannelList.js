@@ -24,14 +24,12 @@ const ChannelList = React.memo(
           <FlatList
             data={data}
             renderItem={renderItem}
-            keyExtractor={(item, index) =>
-              `${item["etag"] + new Date() + index}`
-            }
+            keyExtractor={(item, index) => `${item["etag"] + index}`}
             onEndReached={() => {
               setRefresh(true);
               nextPage();
             }}
-            onEndThreshold={0.5}
+            onEndThreshold={0.3}
             loading={loading}
             refreshing={refresh}
             onRefresh={() => {

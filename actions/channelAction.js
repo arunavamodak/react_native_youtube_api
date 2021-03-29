@@ -1,7 +1,8 @@
 import { FETCH_DATA, UPDATE_DATA } from "./types";
 import axios from "axios";
+import { API_KEY } from "@env";
 
-const API_KEY = "AIzaSyCQwXFAYycHAGzIYZTZ_H5mmYPyVv16C1Q";
+// const API_KEY = "AIzaSyDNkyz-KDdMHe5w8xVQJwXh8iTq2bPIqms";
 
 export const fetchData = (text, changeCompState) => (dispatch) => {
   return axios
@@ -39,6 +40,7 @@ export const updateData = (token, changeCompState) => (dispatch) => {
       console.log(error);
       dispatch(nextData([]));
       changeCompState("");
+      Alert("Error");
     });
 };
 

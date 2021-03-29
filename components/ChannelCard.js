@@ -26,7 +26,9 @@ export default function ChannelCard({ data }) {
       </View>
       <View style={styles.cardInfo}>
         <Text style={styles.cardTitle}>{data.snippet.channelTitle}</Text>
-        <Text style={styles.cardDetails}>{data.snippet.description}</Text>
+        <Text numberOfLines={5} style={styles.cardDetails}>
+          {data.snippet.description}
+        </Text>
       </View>
     </View>
   );

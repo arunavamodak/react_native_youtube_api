@@ -8,10 +8,10 @@ import { connect } from "react-redux";
 import { fetchData, updateData } from "../actions/channelAction";
 
 const Home = (props) => {
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [nextPageToken, setNextPageToken] = useState("");
-  const [refresh, setRefresh] = useState(false);
+  const [search, setSearch] = useState(""); //Search Text
+  const [loading, setLoading] = useState(false); //Loading Status
+  const [nextPageToken, setNextPageToken] = useState(""); //Token to fetch next page
+  const [refresh, setRefresh] = useState(false); //Refresh Status
 
   useEffect(() => {
     reload(search);
@@ -22,11 +22,13 @@ const Home = (props) => {
     []
   );
 
+  //Changes to make after initial Fetch
   const afterFetch = (token) => {
     setLoading(false);
     setNextPageToken(token);
   };
 
+  //Changes to make after each new page data loads after the first page
   const afterRefresh = (token) => {
     setRefresh(false);
     setNextPageToken(token);
@@ -34,16 +36,19 @@ const Home = (props) => {
 
   const fetchData = (text) => {
     setLoading(true);
-    props.fetchData(text, afterFetch);
+    props.fetchData(text, afterFetch); //Action to fetch data initially
   };
 
   const nextPage = () => {
-    props.updateData(nextPageToken, afterRefresh);
+    props.updateData(nextPageToken, afterRefresh); //Action to get data after the initial data has loaded
   };
 
   return (
     <View styles={styles.container}>
+      {/* Searchbar component */}
       <Search search={search} setSearch={setSearch} />
+
+      {/* List of the channel Cards */}
       <ChannelList
         data={props.channels}
         loading={loading}

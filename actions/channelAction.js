@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_KEY } from "@env";
 import { Alert } from "react-native";
 
+//Fetch data and then dispatch an action to update store (Redux Thunk)
 export const fetchData = (text, changeCompState) => (dispatch) => {
   return axios
     .get(

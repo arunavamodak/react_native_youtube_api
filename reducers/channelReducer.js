@@ -1,7 +1,7 @@
 import { FETCH_DATA, UPDATE_DATA } from "../actions/types";
 
 const initialState = {
-  channels: [],
+  channels: [], //Initial State of store
 };
 
 const channelReducer = (state = initialState, action) => {

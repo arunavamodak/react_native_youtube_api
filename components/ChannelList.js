@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import ChannelCard from "./ChannelCard";
 
 const ChannelList = React.memo(
   ({ data, loading, nextPage, refresh, setRefresh, fetchData, search }) => {
+    //Rendering each channel data in the "Channel Card component"
     const renderItem = ({ item }) => <ChannelCard data={item} />;
 
     if (loading) {

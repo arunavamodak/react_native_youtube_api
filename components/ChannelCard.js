@@ -5,16 +5,18 @@ import { View, Text, Linking, ActivityIndicator } from "react-native";
 
 export default function ChannelCard({ data }) {
   return (
+    // The card component : currently Channel Name, Channel Description and Channel Picture in shown
     <View style={styles.card}>
       <View style={styles.cardImgWrapper}>
         <Image
+          //Clicking on the image is going to take the user to the youtube app
           onPress={async () => {
             const supported = await Linking.canOpenURL(
               `https://www.youtube.com/channel/${data["snippet"]["channelId"]}`
             );
             if (supported) {
               await Linking.openURL(
-                `https://www.youtube.com/channel/${data["snippet"]["channelId"]}`
+                `https://www.youtube.com/channel/${data["snippet"]["channelId"]}` //Opening the channel on the youtube app with the "ChannelId"
               );
             }
           }}
